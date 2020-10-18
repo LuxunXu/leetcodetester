@@ -6,7 +6,7 @@ public class Q15 {
 
     public static void main(String[] args) {
         Q15 test = new Q15();
-        int[] array = {-1,0,1,2,-1,-4,-2,-3,3,0,4};
+        int[] array = {-1,0,1,2,-1,-4};
         List<List<Integer>> ans = test.threeSum(array);
         System.out.println(ans);
     }

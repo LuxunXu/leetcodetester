@@ -1,40 +1,34 @@
 package edu.ucr.cs.lxu051.solutions;
 
+import edu.ucr.cs.lxu051.utils.TwoDArray;
+
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Q56 {
-    public Q56() {
 
+    public static void main(String[] args) {
+        int[][] intervals = TwoDArray.gen2DArray("2,6;1,3;8,10;15,18");
+        int[][] output = merge(intervals);
+        System.out.println(Arrays.toString(output));
     }
 
-    public int[][] merge(int[][] intervals) {
-        int curL = intervals[0][0];
-        int curR = intervals[0][1];
-        //int[][] ans = new int[intervals.length][2];
-        List<int[]> ans = new ArrayList<>();
-        int count = 0;
+    public static int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        ArrayList<int[]> mergedList = new ArrayList<>();
+        if (intervals.length == 0) return new int[][]{};
+        int[] curInterval = intervals[0];
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] < curL) {
-                curL = intervals[i][0];
-                curR = Math.max(curR, intervals[i][1]);
-            } else if (intervals[i][0] <= curR) {
-                curR = Math.max(curR, intervals[i][1]);
+            if (intervals[i][0] <= curInterval[1]) { // can merge
+                curInterval[1] = Math.max(intervals[i][1], curInterval[1]);
             } else {
-                int[] a = {curL, curR};
-                ans.add(a);
-                count++;
-                curL = intervals[i][0];
-                curR = intervals[i][1];
+                mergedList.add(curInterval);
+                curInterval = intervals[i];
             }
         }
-        int[] a = {curL, curR};
-        ans.add(a);
-        int[][] finalAns = new int[ans.size()][2];
-        for (int i = 0; i < ans.size(); i++) {
-            finalAns[i][0] = ans.get(i)[0];
-            finalAns[i][1] = ans.get(i)[1];
-        }
-        return finalAns;
+        mergedList.add(curInterval);
+
+        return mergedList.toArray(new int[mergedList.size()][]);
     }
 }
